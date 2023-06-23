@@ -1,4 +1,9 @@
 # VethConnect-Network-Namespace-Interconnection-with-Veth-Cable
+
+What we are going to build
+
+<img width="377" alt="Screenshot 2023-06-23 052930" src="https://github.com/nobelrakib/VethConnect-Network-Namespace-Interconnection-with-Veth-Cable/assets/53372696/59946583-9b7d-40ca-8769-56d0207396a8">
+
 Create two network namespace named red and green  
 
 ```
@@ -76,3 +81,15 @@ Now we will follow the same steps for our green namespace.
 24.sudo ip link set vethcab1 up
 
 ```
+
+Now enter into red name space and ping green name space ip address
+
+```
+sudo ip netns exec red bash
+ping 192.168.0.3
+```
+
+<img width="437" alt="Screenshot 2023-06-23 134411" src="https://github.com/nobelrakib/VethConnect-Network-Namespace-Interconnection-with-Veth-Cable/assets/53372696/d53ef237-76d1-454f-915c-febacbb3dba1">
+
+
+So our namespace is connected by bridge. For this reason we can ping one from another.
