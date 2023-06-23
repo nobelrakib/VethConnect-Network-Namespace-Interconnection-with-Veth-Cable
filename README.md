@@ -26,3 +26,53 @@ Now we will create veth cable which has two sides one side will be connected wit
 7.sudo ip link set vethcab0 master br0
 8.sudo ip link set red0 netns red
 ```
+
+In the above command we have connected our red namespace with bridge. Now lets enter our red namespace and check interface.
+
+```
+9.sudo ip netns exec red bash
+10.ip link
+
+```
+
+You will see two interface.
+
+```
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+4: red0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
+    link/ether f2:9b:d5:07:b1:a9 brd ff:ff:ff:ff:ff:ff
+
+```
+
+One is loop back interface and another is our red0 interface. Initially both of them will be down. You have to make both of them up and assign an ip for our red0 namespace.
+
+```
+11.ip link set lo up
+12.ip link set ceth0 up
+13.ip addr add 192.168.0.2/16 dev red0
+```
+
+Now exit from this name space by typing exit and come to root namespace and make sure to up the interface which is connected to brigde.
+
+```
+15.sudo ip link set vethcab0 up
+
+```
+
+So we have successfully added our red namespace with bridge.
+
+Now we will follow the same steps for our green namespace.
+
+```
+16. sudo ip link add vethcab1 type veth peer name green0
+17. sudo ip link set vethcab1 master br0
+18. sudo ip link set green0 netns green
+19.sudo ip netns exec green bash
+20.ip link set lo up
+21.ip link set green0 up
+22.ip addr add 192.168.0.3/16 dev green0
+23.exit
+24.sudo ip link set vethcab1 up
+
+```
